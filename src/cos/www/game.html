@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game - Conquest of Stacks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="app.css">
+    <script src="app.js" type="text/javascript"></script>
+    <script src="load_audio.js"></script>
+</head>
+<body class="bg-gray-100">
+<header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-700">Conquest of Stacks</h1>
+    <div class="flex items-center space-x-4">
+        <span id="accountName" class="text-gray-700"></span>
+        <button id="logout" class="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Logout</button>
+    </div>
+</header>
+<div class="board container mx-auto pt-10">
+    <div class="container mx-auto p-1 bg-green-600" id="activeplayer"></div>
+</div>
+<div class="flex items-center justify-center p-20">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <div class="flex justify-between items-center mb-4">
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-bold text-gray-700">You</h2>
+                <span id="player0Score" class="text-2xl text-gray-900 px-4 rounded">0</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-bold text-gray-700">Other Player</h2>
+                <span id="player1Score" class="text-2xl text-gray-900 px-4 rounded">0</span>
+            </div>
+        </div>
+        <div class="flex justify-end">
+            <button id="dice" class="text-white font-bold py-2 px-4 rounded hover:bg-gray-600 bg-gray-500">
+                Roll Dice
+            </button>
+            <button id="end_turn" class="text-white font-bold py-2 px-4 ml-4 rounded hover:bg-gray-600 bg-gray-500">
+                End Turn
+            </button>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/centrifuge@5.0.0/dist/centrifuge.js"></script>
+<script>
+    const gameID = sessionStorage.getItem("game_id");
+    const userID = sessionStorage.getItem("user_id");
+    const token = sessionStorage.getItem("token");
+    let game_timeout_in_secs = 15;
+    let justJoined = true;
+
+    const centrifuge = new Centrifuge(`ws://${window.location.hostname}:8000/connection/websocket`, { token });
+    const gameChannel = centrifuge.newSubscription(gameID);
+
+    gameChannel.on('publication', handlePublication);
+    centrifuge.on('connected', handleConnected);
+
+    gameChannel.subscribe();
+    centrifuge.connect();
+
+    document.addEventListener("click", handleClick);
+    document.addEventListener("mouseover", handleMouseOver);
+
+    let diceRollClientTimer = null;
+    document.getElementById('accountName').innerText = userID;
+
+    const players = sessionStorage.getItem("players").split(",");
+    if (players[0] === userID) {
+        document.getElementById("player1Score").classList.add("bg-blue-500");
+        document.getElementById("player0Score").classList.add("bg-red-500");
+    } else if (players[1] === userID) {
+        document.getElementById("player0Score").classList.add("bg-blue-500");
+        document.getElementById("player1Score").classList.add("bg-red-500");
+    }
+
+    function handlePublication(ctx) {
+        const data = ctx.data;
+        const gameCounter = parseInt(sessionStorage.getItem("game_counter") || "0");
+
+        if (gameCounter === (data.game_counter - 1)) {
+            sessionStorage.setItem("game_counter", data.game_counter);
+        } else {
+            // out of sync
+        }
+
+        switch (data.action) {
+            case "segment_occupied":
+                const segment = document.querySelector(`.segment[data="${data.segment_id}"]`);
+                chooseSegment(segment, getColor(data.player_id));
+                break;
+            case "dice_rolled":
+                audioObjects['dice.mp3'].play();
+                chooseGroups(data.sums);
+                break;
+            case "game_started":
+                justJoined = true;
+                break;
+            case "end_turn":
+                clearInterval(diceRollClientTimer);
+                deSelectGroups();
+                document.getElementById("activeplayer").classList.remove("select");
+                break;
+            case "game_over":
+                clearInterval(diceRollClientTimer);
+                deSelectGroups();
+
+                const players = sessionStorage.getItem("players").split(",");
+                let player0Score = parseInt(document.getElementById("player0Score").textContent);
+                let player1Score = parseInt(document.getElementById("player1Score").textContent);
+
+                if (player0Score > player1Score) {
+                    document.getElementById("msg").textContent = "You Win!"
+                    audioObjects['game_win.wav'].play();
+                } else {
+                    document.getElementById("msg").textContent = "You lost!"
+                    audioObjects['game_lost.wav'].play();
+                }
+                document.getElementById("game_over_modal").classList.remove("hidden")
+                break;
+            default:
+                break;
+        }
+
+        if (data.user_id === userID) {
+            if (data.action === "start_roll") {
+                document.getElementById("activeplayer").classList.add("select");
+                if (!justJoined) {
+                    audioObjects['turn.wav'].play();
+                }
+                let diceBtn = document.querySelector("#dice");
+                diceBtn.classList.add("hover:bg-blue-600");
+                diceBtn.classList.add("bg-blue-500");
+                diceBtn.classList.remove("hover:bg-gray-600");
+                diceBtn.classList.remove("bg-gray-500");
+
+                let diceRollClientCounter = game_timeout_in_secs;
+                diceBtn.textContent = `RollDice (${diceRollClientCounter}s)`
+
+                diceRollClientTimer = setInterval(function () {
+                    let diceBtn = document.querySelector("#dice");
+                    if(diceRollClientCounter <= 1) {
+                        diceBtn.textContent = `RollDice`;
+                        handleClick({target: {id: "dice"}});
+                        return clearInterval(diceRollClientTimer);
+                    }
+                    diceRollClientCounter = diceRollClientCounter - 1
+                    diceBtn.textContent = `RollDice (${diceRollClientCounter}s)`
+                }, 1000);
+
+            } else if (data.action === "choose_segment") {
+                clearInterval(diceRollClientTimer);
+                let diceBtn = document.querySelector("#dice");
+                diceBtn.textContent = `RollDice`;
+
+                diceBtn.classList.remove("hover:bg-blue-600");
+                diceBtn.classList.remove("bg-blue-500");
+                diceBtn.classList.add("hover:bg-gray-600");
+                diceBtn.classList.add("bg-gray-500");
+
+                document.querySelector(".board").classList.add("select");
+            } else if (data.action === "end_turn") {
+                document.querySelector(".board").classList.remove("select");
+            }
+        }
+
+        if (data.score) {
+            updateScores(data.score);
+        }
+    }
+
+    function handleConnected() {
+        fetch(`http://${window.location.hostname}:8080/game/${gameID}/connected`, {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+    }
+
+    function handleClick(event) {
+        if (event.target.id === "logout") {
+            sessionStorage.clear();
+            window.location.href = "/www/login.html";
+        } else if (event.target.id === "dice") {
+            fetch(`http://${window.location.hostname}:8080/game/${gameID}/roll`, {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+        } else if (event.target.id === "end_turn") {
+            fetch(`http://${window.location.hostname}:8080/game/${gameID}/end_turn`, {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+        } else if (event.target.id === "close_modal") {
+            window.location = "/www/game.html";
+        }
+    }
+
+    function handleMouseOver() {
+        if (justJoined) {
+            audioObjects['opening_game.wav'].play();
+            justJoined = false;
+        }
+    }
+
+    function updateScores(score) {
+        const players = sessionStorage.getItem("players").split(",");
+        if (players[0] === userID) {
+            document.getElementById("player0Score").textContent = score.player0;
+            document.getElementById("player1Score").textContent = score.player1;
+        } else if (players[1] === userID) {
+            document.getElementById("player0Score").textContent = score.player1;
+            document.getElementById("player1Score").textContent = score.player0;
+        }
+    }
+</script>
+
+<div id="game_over_modal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4" id="msg">You Win!</h2>
+        <div class="loader border-t-4 border-blue-500 w-16 h-16 rounded-full animate-spin mx-auto hidden"></div>
+        <button id="close_modal" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Close</button>
+    </div>
+</div>
+
+</body>
+</html>
+

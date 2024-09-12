@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Game - Conquest of Stacks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="load_audio.js"></script>
+</head>
+<body class="bg-gray-100">
+<header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-700">Conquest of Stacks</h1>
+    <div class="flex items-center space-x-4">
+        <span id="accountName" class="text-gray-700"></span>
+        <button id="logout" class="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Logout</button>
+    </div>
+</header>
+<div id="waitingModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4" id="msg">Joining Lobby...</h2>
+        <div class="loader border-t-4 border-blue-500 w-16 h-16 rounded-full animate-spin mx-auto"></div>
+    </div>
+</div>
+<div class="flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+        <h2 class="text-2xl font-bold mb-6 text-gray-700">Join a Game</h2>
+        <button class="join-game-button focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 w-full">15s</button>
+        <button class="join-game-button focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 w-full">30s</button>
+    </div>
+</div>
+<script src="https://unpkg.com/centrifuge@5.0.0/dist/centrifuge.js"></script>
+<script>
+    const centrifuge = new Centrifuge(`ws://${window.location.hostname}:8000/connection/websocket`, {
+        token: sessionStorage.getItem("token")
+    });
+
+    const lobby = centrifuge.newSubscription('lobby');
+    lobby.on('publication', function(ctx) {
+        sessionStorage.setItem("game_id", ctx.data.game_id);
+        sessionStorage.setItem("players", ctx.data.players);
+        document.querySelector("#waitingModal").classList.add("hidden");
+        window.location.href = "/www/game.html";
+    });
+
+    lobby.subscribe();
+    centrifuge.connect();
+
+    function joinGame(lobby) {
+        fetch(`http://${window.location.hostname}:8080/game/join_game/${lobby}`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+            }
+        });
+    }
+
+    function handleButtonClick(el) {
+        if (el.target.classList.contains('join-game-button')) {
+            document.querySelector("#waitingModal").classList.remove("hidden");
+            setTimeout(() => {
+                document.querySelector('#msg').textContent = "Waiting for another player to join...";
+                audioObjects['waiting.mp3'].play();
+                joinGame(el.target.innerText);
+            }, 2000);
+        } else if (el.target.id === "logout") {
+            sessionStorage.clear();
+            window.location.href = "/www/login.html";
+        }
+    }
+
+    document.addEventListener("click", handleButtonClick);
+
+    document.getElementById('accountName').innerText = sessionStorage.getItem('user_id');
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+html, body, .board {
+    width: 100%;
+}
+
+.board {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#activeplayer {
+    visibility: hidden;
+}
+
+#activeplayer.select {
+    visibility: visible !important;
+}
+
+.group {
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px;
+    border: 1px;
+    background-color: #e8eded;
+    flex: 1;
+    position: relative;
+}
+
+.group.selected {
+    background-color: #b2e0f4 !important
+}
+
+.group:hover {
+    background-color: #d2d7d7;
+}
+
+.group_label {
+    position: absolute;
+    width: 40px;
+    padding: 5px;
+    bottom: 0;
+    right: 0;
+    font-size: 1.5em;
+    background-color: gold;
+    text-align: center;
+    border-bottom-right-radius: 10px;
+}
+
+.stack_container {
+    display: flex;
+    flex-direction: row;
+}
+
+.stack {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background-color: #979e9e;
+    margin-bottom: 8px;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
+.stack_label {
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-right: 5px;
+    margin-top: 12px;
+    padding-top: 6px;
+    border-radius: 25px;
+    background-color: #979e9e;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    width: 40px;
+}
+
+.stack_label.red {
+    background-color: #f8241d;
+    color: white;
+}
+.stack_label.blue {
+    background-color: #207ffc;
+    color: white;
+}
+
+.segment {
+    display: inline-block;
+    margin: 5px 3px;
+    padding: 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    user-select: none;
+    background-color: #d0d9d9;
+}
+
+.board.select.red .group.selected .segment:hover {
+    cursor: pointer;
+    background-color: #f8241dab;
+}
+
+.board.select.blue .group.selected  .segment:hover {
+    cursor: pointer;
+    background-color: #207ffca4;
+}
+
+.segment.red, .segment.red:hover {
+    background-color: #f8241d !important;
+}
+.segment.blue, .segment.blue:hover {
+    background-color: #207ffc !important;
+}
+

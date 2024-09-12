@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Conquest of Stacks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-700">Conquest of Stacks</h1>
+    <div class="flex items-center space-x-4">
+        <span id="accountName" class="text-gray-700"></span>
+        <button id="register" class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Register</button>
+    </div>
+</header>
+<div class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">Login</h2>
+        <div class="mb-4">
+            <label for="username" class="block text-gray-600 mb-2">Username</label>
+            <input id="username" type="text" class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2"/>
+        </div>
+        <div class="mb-6">
+            <label for="password" class="block text-gray-600 mb-2">Password</label>
+            <input id="password" type="password" class="border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2"/>
+        </div>
+        <div>
+            <button id="login" type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded w-full hover:bg-blue-600">Login</button>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("login").addEventListener("click", function () {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if (username === "" || password === "") {
+            alert("Username and password cannot be empty.");
+            return;
+        }
+
+        fetch(`http://${window.location.hostname}:8080/login?username=${username}&password=${password}`, { method: "POST" })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`Login failed with status: ${response.status}`);
+                }
+            })
+            .then(data => {
+                sessionStorage.setItem("user_id", parseJwt(data.token).sub);
+                sessionStorage.setItem("token", data.token);
+                window.location.href = "/www/join.html";
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    });
+
+    function parseJwt(token) {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    document.getElementById("register").addEventListener("click", function () {
+        window.location.href = "/www/register.html";
+    });
+</script>
+</body>
+</html>

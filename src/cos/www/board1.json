@@ -1,0 +1,292 @@
+{
+  "board": [
+    {
+      "control_group": 7,
+      "points": 4,
+      "number_of_segments": 1,
+      "_id": "0b4297af-5e38-45e0-a2c2-bd213c824a41"
+    },
+    {
+      "control_group": 11,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "0b33bb93-5fb4-4ec7-8d15-91f2b36b3889"
+    },
+    {
+      "control_group": 14,
+      "points": 5,
+      "number_of_segments": 3,
+      "_id": "6fe9742e-091b-4c40-ad11-efccf19aa7e6"
+    },
+    {
+      "control_group": 8,
+      "points": 3,
+      "number_of_segments": 3,
+      "_id": "623d6ea9-1464-4306-b70b-2606ff174b47"
+    },
+    {
+      "control_group": 12,
+      "points": 20,
+      "number_of_segments": 9,
+      "_id": "06a1ca64-66f8-4292-bded-c960f45aedf2"
+    },
+    {
+      "control_group": 9,
+      "points": 3,
+      "number_of_segments": 4,
+      "_id": "2293394f-367b-426a-a593-06c41aca7a54"
+    },
+    {
+      "control_group": 15,
+      "points": 1,
+      "number_of_segments": 2,
+      "_id": "f8889970-a3e9-4882-a142-2a05ae4d687f"
+    },
+    {
+      "control_group": 12,
+      "points": 1,
+      "number_of_segments": 1,
+      "_id": "97d16119-784b-4a86-9d4b-9f3a660b626c"
+    },
+    {
+      "control_group": 14,
+      "points": 14,
+      "number_of_segments": 5,
+      "_id": "5f725543-8877-4243-b2c5-8c666235d1ff"
+    },
+    {
+      "control_group": 13,
+      "points": 8,
+      "number_of_segments": 3,
+      "_id": "9202e322-b347-4ff1-86a2-76b98b9ff6b4"
+    },
+    {
+      "control_group": 9,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "1bf3c9df-b5fa-4947-aa00-4499ac76ba29"
+    },
+    {
+      "control_group": 12,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "3e1114ab-d903-47de-a134-9226f6718a5b"
+    },
+    {
+      "control_group": 10,
+      "points": 10,
+      "number_of_segments": 5,
+      "_id": "2cb93c7a-08f7-43ed-a467-d0f734b8a59e"
+    },
+    {
+      "control_group": 14,
+      "points": 5,
+      "number_of_segments": 3,
+      "_id": "f022e8ab-5dd0-4359-8e9d-255ab52d930c"
+    },
+    {
+      "control_group": 7,
+      "points": 3,
+      "number_of_segments": 3,
+      "_id": "f618185d-16f1-4782-aff1-a9d57e9dceeb"
+    },
+    {
+      "control_group": 9,
+      "points": 4,
+      "number_of_segments": 1,
+      "_id": "1bbfd9e3-036a-460c-b9c0-a741ebbf5f7b"
+    },
+    {
+      "control_group": 16,
+      "points": 4,
+      "number_of_segments": 4,
+      "_id": "edc545f2-f7e5-4cf4-aae3-b16a5104a5e5"
+    },
+    {
+      "control_group": 13,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "263a337b-2141-46c4-af4d-5496b690e3d7"
+    },
+    {
+      "control_group": 10,
+      "points": 5,
+      "number_of_segments": 3,
+      "_id": "22589eaa-1d27-42ec-b8c6-42bde942e3fd"
+    },
+    {
+      "control_group": 15,
+      "points": 5,
+      "number_of_segments": 3,
+      "_id": "6b83dbd3-115d-41d7-839a-9959f3ea8efb"
+    },
+    {
+      "control_group": 9,
+      "points": 8,
+      "number_of_segments": 3,
+      "_id": "d680c1d0-7a7e-4c8a-b523-f21aa14c152d"
+    },
+    {
+      "control_group": 15,
+      "points": 4,
+      "number_of_segments": 3,
+      "_id": "c52cec31-50e2-4614-a0f6-f80b0a9dd837"
+    },
+    {
+      "control_group": 12,
+      "points": 3,
+      "number_of_segments": 1,
+      "_id": "8aff582d-08a7-4b2c-87cc-2a3316ab48f3"
+    },
+    {
+      "control_group": 9,
+      "points": 4,
+      "number_of_segments": 3,
+      "_id": "9a585095-1b95-43bb-ac71-8ba8d9666d5b"
+    },
+    {
+      "control_group": 16,
+      "points": 1,
+      "number_of_segments": 1,
+      "_id": "6e293442-8332-4e61-8e57-1d3e93712e86"
+    },
+    {
+      "control_group": 11,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "f84aa507-a613-44c6-91d4-9eaf587dc7c9"
+    },
+    {
+      "control_group": 13,
+      "points": 3,
+      "number_of_segments": 1,
+      "_id": "5dbde996-f936-4c40-86e0-cc9ef02d1e45"
+    },
+    {
+      "control_group": 17,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "de7d98e1-03e4-4b68-8a0c-5834c0f2676a"
+    },
+    {
+      "control_group": 12,
+      "points": 6,
+      "number_of_segments": 3,
+      "_id": "8123b4e7-d3da-426c-a20e-b98bd6f13bc3"
+    },
+    {
+      "control_group": 15,
+      "points": 5,
+      "number_of_segments": 5,
+      "_id": "b9c4e010-f594-46f7-8937-04f0e9dca3c4"
+    },
+    {
+      "control_group": 15,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "de20d479-4afd-4ea4-a24d-090e2a80595f"
+    },
+    {
+      "control_group": 11,
+      "points": 14,
+      "number_of_segments": 5,
+      "_id": "2cb29574-9102-4deb-83de-515ffe2e64f8"
+    },
+    {
+      "control_group": 11,
+      "points": 7,
+      "number_of_segments": 3,
+      "_id": "c9b70fc0-c530-4884-97ae-d93a5b945439"
+    },
+    {
+      "control_group": 8,
+      "points": 1,
+      "number_of_segments": 1,
+      "_id": "6f8f282f-0474-4d3d-bb16-9d483b248e32"
+    },
+    {
+      "control_group": 12,
+      "points": 8,
+      "number_of_segments": 5,
+      "_id": "8e8e0c1b-65e2-4bdd-8338-ac4334522aca"
+    },
+    {
+      "control_group": 16,
+      "points": 3,
+      "number_of_segments": 1,
+      "_id": "1097fa87-a563-4951-a05f-9f4ac7d8f6db"
+    },
+    {
+      "control_group": 17,
+      "points": 3,
+      "number_of_segments": 1,
+      "_id": "f7c7c3dc-daf3-465b-a173-74ecb7bbfdbb"
+    },
+    {
+      "control_group": 7,
+      "points": 2,
+      "number_of_segments": 1,
+      "_id": "74621c87-e957-4425-b112-26f8c7a66618"
+    },
+    {
+      "control_group": 17,
+      "points": 4,
+      "number_of_segments": 1,
+      "_id": "e81f894a-29ae-4122-8fd3-b71b211503d4"
+    },
+    {
+      "control_group": 12,
+      "points": 1,
+      "number_of_segments": 1,
+      "_id": "9bd10eed-b460-4a28-86a3-1ee533a17adc"
+    },
+    {
+      "control_group": 10,
+      "points": 5,
+      "number_of_segments": 3,
+      "_id": "a6276e69-95fb-4b24-8a0a-e428e8f1b017"
+    },
+    {
+      "control_group": 13,
+      "points": 19,
+      "number_of_segments": 9,
+      "_id": "bd8c5a81-b277-4279-8b94-c8f7888ee900"
+    },
+    {
+      "control_group": 10,
+      "points": 3,
+      "number_of_segments": 3,
+      "_id": "8f3cc963-12bf-41f0-b5e6-a187a769d864"
+    },
+    {
+      "control_group": 10,
+      "points": 1,
+      "number_of_segments": 1,
+      "_id": "095a0f48-18d8-4c9f-9c80-3b075aa74f73"
+    },
+    {
+      "control_group": 13,
+      "points": 6,
+      "number_of_segments": 3,
+      "_id": "4729e6c2-8529-46ec-a849-af0eea12baf3"
+    },
+    {
+      "control_group": 11,
+      "points": 6,
+      "number_of_segments": 3,
+      "_id": "770e2c56-ece4-4203-ade0-fbd44220d45d"
+    },
+    {
+      "control_group": 14,
+      "points": 2,
+      "number_of_segments": 2,
+      "_id": "14e1fb25-1e6d-4139-822f-c2ec3ffd2ce0"
+    },
+    {
+      "control_group": 16,
+      "points": 5,
+      "number_of_segments": 3,
+      "_id": "c9e56b64-6963-4bbf-b299-3d652d8a5f10"
+    }
+  ]
+}
